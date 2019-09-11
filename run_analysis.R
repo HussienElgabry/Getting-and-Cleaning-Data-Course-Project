@@ -1,4 +1,7 @@
 
+library(plyr)
+library(knitr)
+
 # Get the test data
 subjectTest <- read.table('UCI HAR Dataset/test/subject_test.txt')
 xTest       <- read.table('UCI HAR Dataset/test/x_test.txt')
@@ -26,13 +29,24 @@ features <- as.character(read.table("UCI HAR Dataset/features.txt")[,2])
 fullData <- fullData[, grepl("subject|activity|mean|std", colnames(fullData))]
 
 
-# 3) Uses descriptive activity names to name the activities in the data set
+#  3) Uses descriptive activity names to name the activities in the data set
 colnames(fullData) <- c("subjectID", features, "activityID")
 
-# 4. Appropriately label the data set with descriptive activity names
+#  4) Appropriately label the data set with descriptive activity names
 names(fullData) <- gsub("^t", "time", names(fullData))
 names(fullData) <- gsub("^f", "frequency", names(fullData))
 names(fullData) <- gsub("Acc", "Accelerometer", names(fullData))
 names(fullData) <- gsub("Gyro", "Gyroscope", names(fullData))
 names(fullData) <- gsub("Mag", "Magnitude", names(fullData))
 names(fullData) <- gsub("BodyBody", "Body", names(fullData))
+
+#  5) From the data set in step 4, creates a second, independent tidy
+#     data set with the average of each variable for each activity and each subject.
+newData <- aggregate(. ~subject + activity, fullData, mean)
+newData <- newData[order(newData$subject, newData$activity),]
+write.table(newData, file = "tidydata.txt", row.name = FALSE)
+
+# A code book that describes the variables, the data,
+# and any transformations or work that you performed to
+# clean up the data called CodeBook.m
+knit2html("codebook.Rmd")
