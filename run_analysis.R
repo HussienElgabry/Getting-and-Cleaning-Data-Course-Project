@@ -22,14 +22,14 @@ activityLabels <- as.character(read.table("UCI HAR Dataset/activity_labels.txt")
 #Get the features
 features <- as.character(read.table("UCI HAR Dataset/features.txt")[,2])
 
-# assign column names
-colnames(fullData) <- c("subjectID", features, "activityID")
-
 #  2) Extracts only the measurements on the mean and standard deviation for each measurement
 fullData <- fullData[, grepl("subject|activity|mean|std", colnames(fullData))]
 
 
 # 3) Uses descriptive activity names to name the activities in the data set
+colnames(fullData) <- c("subjectID", features, "activityID")
+
+# 4. Appropriately label the data set with descriptive activity names
 names(fullData) <- gsub("^t", "time", names(fullData))
 names(fullData) <- gsub("^f", "frequency", names(fullData))
 names(fullData) <- gsub("Acc", "Accelerometer", names(fullData))
