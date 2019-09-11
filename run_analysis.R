@@ -29,3 +29,10 @@ colnames(fullData) <- c("subjectID", features, "activityID")
 fullData <- fullData[, grepl("subject|activity|mean|std", colnames(fullData))]
 
 
+# 3) Uses descriptive activity names to name the activities in the data set
+names(fullData) <- gsub("^t", "time", names(fullData))
+names(fullData) <- gsub("^f", "frequency", names(fullData))
+names(fullData) <- gsub("Acc", "Accelerometer", names(fullData))
+names(fullData) <- gsub("Gyro", "Gyroscope", names(fullData))
+names(fullData) <- gsub("Mag", "Magnitude", names(fullData))
+names(fullData) <- gsub("BodyBody", "Body", names(fullData))
