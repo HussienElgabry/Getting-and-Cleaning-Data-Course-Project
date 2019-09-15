@@ -45,8 +45,3 @@ names(fullData) <- gsub("BodyBody", "Body", names(fullData))
 newData <- aggregate(. ~subject + activity, fullData, mean)
 newData <- newData[order(newData$subject, newData$activity),]
 write.table(newData, file = "tidydata.txt", row.name = FALSE)
-
-# A code book that describes the variables, the data,
-# and any transformations or work that you performed to
-# clean up the data called CodeBook.m
-knit2html("codebook.Rmd")
